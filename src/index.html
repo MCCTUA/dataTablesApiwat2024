@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/r-2.5.0/datatables.min.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/r-2.5.0/datatables.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <table id="example" class="table table-striped nowrap" style="width:100%">
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded',()=>{
+        google.script.run.withSuccessHandler(showTable).getData()
+      })
+
+      function showTable(res){
+        const dataSet = res.data
+        const headers = res.headers.map(header =>{
+          return {title:header}
+        })
+          new DataTable('#example', {
+            columns: headers,
+            data: dataSet,
+            responsive: true,
+
+        })
+        
+      }
+  </script>
+</body>
+
+</html>
