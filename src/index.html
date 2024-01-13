@@ -50,7 +50,137 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container mt-3">
+      <div class="row mb-3">
+        <div class="col">
+          <!-- Button trigger modal -->
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
+            เพิ่มข้อมูล
+          </button>
+
+          <!-- Modal -->
+
+          <div
+            class="modal fade"
+            id="staticBackdrop"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    เพิ่มข้อมูล
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form class="row g-3" id="myForm" onsubmit="submitForm(this)">
+                    <div class="col-md-6">
+                      <label for="inputEmail4" class="form-label">เลขที่</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input1"
+                        name="input1"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputPassword4" class="form-label"
+                        >ชื่อ-สกุล</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input2"
+                        name="input2"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputAddress" class="form-label"
+                        >เบอร์โทร</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input3"
+                        name="input3"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputAddress2" class="form-label"
+                        >อีเมล</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="input4"
+                        name="input4"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputCity" class="form-label">ชื่อเล่น</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input5"
+                        name="input5"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputZip" class="form-label">วันเกิด</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="input6"
+                        name="input6"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputZip" class="form-label"
+                        >Upload File</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="myfile"
+                        name="myfile"
+                      />
+                    </div>
+
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        ปิด
+                      </button>
+                      <button type="submit" class="btn btn-primary">
+                        บันทึกข้อมูล
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <table
         id="example"
         class="table table-striped nowrap centered"
@@ -60,6 +190,26 @@
       </table>
     </div>
     <script>
+      function submitForm(obj) {
+        event.preventDefault();
+
+        Swal.fire({ title: "รอสักครู่.." });
+        Swal.showLoading();
+
+        google.script.run
+          .withSuccessHandler(() => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "บันทึกข้อมูลสำเร็จ",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            document.getElementById("myForm").reset();
+          })
+          .saveData(obj);
+      }
+
       window.addEventListener("DOMContentLoaded", () => {
         google.script.run.withSuccessHandler(showTable).getData();
       });
@@ -81,7 +231,7 @@
             {
               target: 6,
               render: (data) => {
-                return `<a href='${data}' target=_blank> <span class="material-symbols-outlined"> download_for_offline </span> </a>`;
+                return `<a href='${data}' target=_blank> <span class="material-symbols-outlined"> download </span> </a>`;
               },
             },
           ],
@@ -97,5 +247,6 @@
         });
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>

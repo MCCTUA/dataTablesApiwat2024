@@ -13,3 +13,17 @@ function getData() {
     Logger.log(headers)
     return { data: data, headers: headers }
 }
+
+function saveData(obj) {
+    console.log(obj)
+    const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1')
+    const folder = DriveApp.getFolderById('1hjgAMvEB2t5h3B4e5T2nSgVdbZUdbAp6')
+    if (obj.myfile) {
+        const fileUrl = folder.createFile(obj.myfile).getUrl()
+        ss.appendRow([obj.input1, obj.input2, obj.input3, obj.input4, obj.input5, obj.input6, fileUrl])
+    } else {
+        ss.appendRow([obj.input1, obj.input2, obj.input3, obj.input4, obj.input5, obj.input6])
+    }
+
+
+}
