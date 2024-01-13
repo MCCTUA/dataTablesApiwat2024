@@ -57,15 +57,15 @@
       <div class="row mb-3">
         <div class="col">
           <!-- Button trigger modal -->
-
-          <button
+          <!-- ย้ายปุ่มไปอยู่ใน datatables -->
+          <!-- <button
             type="button"
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#staticBackdrop"
           >
             เพิ่มข้อมูล
-          </button>
+          </button> -->
 
           <!-- Modal -->
 
@@ -234,12 +234,18 @@
             {
               target: 6,
               render: (data) => {
-                return `<a href='${data}' target=_blank> <span class="material-symbols-outlined"> download_for_offline </span> </a>`;
+                return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
               },
             },
           ],
           dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
           buttons: [
+            {
+              text: "เพิ่มข้อมูล",
+              action: function (e, dt, node, config) {
+                $("#staticBackdrop").modal("show");
+              },
+            },
             { extend: "copy", className: "btn-success" },
             { extend: "csv", className: "btn-primary" },
             { extend: "excel", className: "btn-danger" },
