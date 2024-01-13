@@ -36,14 +36,15 @@
       href="https://fonts.googleapis.com/css2?family=Kanit&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
 
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200")
       .material-symbols-outlined {
         font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .centered {
+        text-align: center !important;
+        vertical-align: middle !important;
       }
     </style>
   </head>
@@ -52,9 +53,11 @@
     <div class="container">
       <table
         id="example"
-        class="table table-striped nowrap"
+        class="table table-striped nowrap centered"
         style="width: 100%"
-      ></table>
+      >
+        <thead class="table-dark"></thead>
+      </table>
     </div>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
@@ -74,6 +77,7 @@
             url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
           },
           columnDefs: [
+            { className: "centered", targets: [0, 1, 2, 3, 4, 5, 6] },
             {
               target: 6,
               render: (data) => {
@@ -82,7 +86,13 @@
             },
           ],
           dom: "Bflrtip",
-          buttons: ["copy", "csv", "excel", "pdf", "print"],
+          buttons: [
+            { extend: "copy", className: "btn-success" },
+            { extend: "csv", className: "btn-primary" },
+            { extend: "excel", className: "btn-danger" },
+            { extend: "pdf", className: "btn-info" },
+            { extend: "print", className: "btn-warning" },
+          ],
         });
       }
     </script>
