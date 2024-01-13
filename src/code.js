@@ -5,12 +5,21 @@ function doGet() {
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
 }
 
-function getData() {
+function getDataWorkSheet() {
     let ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('sheet1')
     let data = ss.getDataRange().getDisplayValues()
-    Logger.log(data)
+
+    let dataObj = {
+        ss,
+        data
+    }
+
+    return dataObj
+}
+
+function getData() {
+    let { data } = getDataWorkSheet()
     let headers = data.shift()
-    Logger.log(headers)
     return { data: data, headers: headers }
 }
 
@@ -24,6 +33,11 @@ function saveData(obj) {
     } else {
         ss.appendRow([obj.input1, obj.input2, "'" + obj.input3, obj.input4, obj.input5, obj.input6])
     }
+}
 
-
+function deleteRecord(numId) {
+    const { data, ss } = getDataWorkSheet()
+    let idRow = data.map(row => row[0])
+    let index = idRow.indexOf(numId)
+    ss.deleteRow(index + 1)
 }

@@ -219,6 +219,26 @@
           .saveData(obj);
       }
 
+      function deleteRow(el) {
+        Swal.fire({ title: "กำลังลบข้อมูล.." });
+        Swal.showLoading();
+
+        const numId = el.parentNode.parentNode.cells[0].innerText;
+        google.script.run
+          .withSuccessHandler(() => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "ลบข้อมูลสำเร็จ",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+
+            google.script.run.withSuccessHandler(showTable).getData();
+          })
+          .deleteRecord(numId);
+      }
+
       window.addEventListener("DOMContentLoaded", () => {
         google.script.run.withSuccessHandler(showTable).getData();
       });
@@ -232,6 +252,8 @@
           columns: headers,
           data: dataSet,
           responsive: true,
+          destroy: true,
+          pageLength: 10,
           language: {
             url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
           },
@@ -252,7 +274,7 @@
             {
               target: 8,
               render: (data) => {
-                return (data = `<button class="btn btn-danger"> <i class="fa-solid fa-trash-can"></i> </button>`);
+                return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
               },
             },
           ],
