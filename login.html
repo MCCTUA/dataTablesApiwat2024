@@ -1,319 +1,160 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top" />
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Anuphan", sans-serif;
+  }
+  .containerLogin {
+    height: 80vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
 
-    <!-- jquery -->
+  .form_main {
+    width: 380px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 30px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    position: relative;
+    overflow: hidden;
+  }
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+  .heading {
+    font-size: 3rem;
+    color: #2e2e2e;
+    font-weight: 700;
+    /* margin: 5px 0 10px 0; */
+    z-index: 2;
+  }
 
-    <!-- datatables -->
+  .inputContainer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
 
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"
-      rel="stylesheet"
-    />
+  .inputIcon {
+    position: absolute;
+    left: 3px;
+  }
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+  .inputField {
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid rgb(173, 173, 173);
+    /* margin: 10px 0; */
+    color: black;
+    font-size: 1rem;
+    font-weight: 500;
+    box-sizing: border-box;
+    padding-left: 30px;
+    transition: border-bottom 0.4s;
+  }
 
-    <!-- google font -->
+  .inputField:focus {
+    outline: none;
+    border-bottom: 2px solid rgb(199, 114, 255);
+    transition: border-bottom 0.4s;
+  }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kanit&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
+  .inputField::placeholder {
+    color: rgb(80, 80, 80);
+    font-size: 1rem;
+    font-weight: 500;
+  }
 
-    <!-- font awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
+  #button {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(162, 104, 255);
+    height: 45px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    /* margin: 10px; */
+    cursor: pointer;
+    transition: background-color 0.4s;
+  }
 
-    <style>
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-      .centered {
-        text-align: center !important;
-        vertical-align: middle !important;
-      }
-    </style>
-  </head>
+  #button:hover {
+    background-color: rgb(126, 84, 255);
+    transition: background-color 0.4s;
+  }
+</style>
 
-  <body>
-    <div class="container mt-3">
-      <div class="row mb-3">
-        <div class="col">
-          <!-- Button trigger modal -->
-          <!-- ย้ายปุ่มไปอยู่ใน datatables -->
-          <!-- <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop"
-          >
-            เพิ่มข้อมูล
-          </button> -->
+<div class="containerLogin">
+  <form class="form_main" id="myForm" onsubmit="login(this)">
+    <p class="heading">ลงชื่อเข้าใช้</p>
 
-          <!-- Modal -->
-
-          <div
-            class="modal fade"
-            id="staticBackdrop"
-            data-bs-backdrop="static"
-            data-bs-keyboard="false"
-            tabindex="-1"
-            aria-labelledby="staticBackdropLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">
-                    เพิ่มข้อมูล
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  <form class="row g-3" id="myForm" onsubmit="submitForm(this)">
-                    <div class="col-md-6">
-                      <label for="inputEmail4" class="form-label">เลขที่</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="input1"
-                        name="input1"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputPassword4" class="form-label"
-                        >ชื่อ-สกุล</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="input2"
-                        name="input2"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputAddress" class="form-label"
-                        >เบอร์โทร</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="input3"
-                        name="input3"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputAddress2" class="form-label"
-                        >อีเมล</label
-                      >
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="input4"
-                        name="input4"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputCity" class="form-label">ชื่อเล่น</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="input5"
-                        name="input5"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputZip" class="form-label">วันเกิด</label>
-                      <input
-                        type="date"
-                        class="form-control"
-                        id="input6"
-                        name="input6"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputZip" class="form-label"
-                        >Upload File</label
-                      >
-                      <input
-                        type="file"
-                        class="form-control"
-                        id="myfile"
-                        name="myfile"
-                      />
-                    </div>
-
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        ปิด
-                      </button>
-                      <button type="submit" class="btn btn-primary">
-                        บันทึกข้อมูล
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <table
-        id="example"
-        class="table table-striped nowrap centered"
-        style="width: 100%"
-      >
-        <thead class="table-dark"></thead>
-      </table>
-
-      <!-- Modal Login -->
-      <div class="modal fade" id="Login">
-        <div class="modal-dialog modal-fullscreen">
-          <div class="modal-content bg-body-tertiary">
-            <div class="modal-header justify-content-center">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                login by ครูอภิวัฒน์ สอนสร้างสื่อ
-              </h1>
-            </div>
-            <div class="modal-body">
-              <?!=include('login')?>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal end -->
+    <div class="inputContainer">
+      <i class="fa-solid fa-user-lock"></i>
+      <input
+        type="text"
+        class="inputField"
+        id="username"
+        placeholder="ชื่อผู้ใช้"
+      />
     </div>
-    <script>
-      function submitForm(obj) {
-        event.preventDefault();
 
-        Swal.fire({ title: "รอสักครู่.." });
-        Swal.showLoading();
+    <div class="inputContainer">
+      <i class="fa-solid fa-lock"></i>
+      <input
+        type="password"
+        class="inputField"
+        id="password"
+        placeholder="รหัสผ่าน"
+      />
+    </div>
 
-        google.script.run
-          .withSuccessHandler(() => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "บันทึกข้อมูลสำเร็จ",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            document.getElementById("myForm").reset();
-          })
-          .saveData(obj);
-      }
+    <button type="submit" id="button">เข้าสู่ระบบ</button>
+  </form>
+</div>
 
-      function deleteRow(el) {
-        Swal.fire({ title: "กำลังลบข้อมูล.." });
-        Swal.showLoading();
-
-        const numId = el.parentNode.parentNode.cells[0].innerText;
-        google.script.run
-          .withSuccessHandler(() => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "ลบข้อมูลสำเร็จ",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-
-            google.script.run.withSuccessHandler(showTable).getData();
-          })
-          .deleteRecord(numId);
-      }
-
-      window.addEventListener("load", () => {
-        $("#Login").modal("show");
-        google.script.run.withSuccessHandler(showTable).getData();
+<script>
+  function login(obj) {
+    Swal.fire({ title: "รอสักครู่" });
+    Swal.showLoading();
+    event.preventDefault();
+    let username = obj.username.value;
+    let password = obj.password.value;
+    if (username == "admin" && password == "pass") {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "ลงชื่อเข้าใช้สำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
       });
-
-      function showTable(res) {
-        const dataSet = res.data;
-        const headers = res.headers.map((header) => {
-          return { title: header };
-        });
-        new DataTable("#example", {
-          columns: headers,
-          data: dataSet,
-          responsive: true,
-          destroy: true,
-          pageLength: 10,
-          language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
-          },
-          columnDefs: [
-            { className: "centered", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-            {
-              target: 6,
-              render: (data) => {
-                return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
-              },
-            },
-            {
-              target: 7,
-              render: (data) => {
-                return (data = `<button class="btn btn-warning"> <i class="fa-solid fa-pencil"></i> </button>`);
-              },
-            },
-            {
-              target: 8,
-              render: (data) => {
-                return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
-              },
-            },
-          ],
-          dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
-          buttons: [
-            {
-              text: "เพิ่มข้อมูล",
-              action: function (e, dt, node, config) {
-                $("#staticBackdrop").modal("show");
-              },
-            },
-            { extend: "copy", className: "btn-success" },
-            { extend: "csv", className: "btn-primary" },
-            { extend: "excel", className: "btn-danger" },
-            { extend: "pdf", className: "btn-info" },
-            { extend: "print", className: "btn-warning" },
-          ],
-          lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
-        });
-      }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </body>
-</html>
+      $("#Login").modal("hide");
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง!!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    document.getElementById("myForm").reset();
+  }
+</script>

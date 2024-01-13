@@ -35,7 +35,15 @@ function saveData(obj) {
     if (obj.myfile) {
         const fileUrl = folder.createFile(obj.myfile).getUrl()
         const fileId = fileUrl.split('/')[5]
-        ss.appendRow([obj.input1, obj.input2, "'" + obj.input3, obj.input4, obj.input5, obj.input6, `https://lh3.googleUserContent.com/d/${fileId}`])
+        ss.appendRow([
+            obj.input1,
+            obj.input2,
+            "'" + obj.input3,
+            obj.input4,
+            obj.input5,
+            obj.input6,
+            `https://lh3.googleUserContent.com/d/${fileId}`
+        ])
     } else {
         ss.appendRow([obj.input1, obj.input2, "'" + obj.input3, obj.input4, obj.input5, obj.input6])
     }
@@ -45,5 +53,9 @@ function deleteRecord(numId) {
     const { data, ss } = getDataWorkSheet()
     let idRow = data.map(row => row[0])
     let index = idRow.indexOf(numId)
+    let file = ss.getRange(index + 1, 7).getValue()
+    let idFile = file.split('/')[4]
+    DriveApp.getFileById(idFile).setTrashed(true)
     ss.deleteRow(index + 1)
+
 }
