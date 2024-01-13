@@ -5,6 +5,12 @@ function doGet() {
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
 }
 
+//----------------------------------------------------------------------
+function include(file) {
+    return HtmlService.createHtmlOutputFromFile(file).getContent()
+}
+//----------------------------------------------------------------------
+
 function getDataWorkSheet() {
     let ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('sheet1')
     let data = ss.getDataRange().getDisplayValues()
