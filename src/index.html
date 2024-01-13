@@ -2,23 +2,33 @@
 <html>
   <head>
     <base target="_top" />
+
+    <!-- jquery -->
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <!-- datatables -->
+
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <link
-      href="https://cdn.datatables.net/v/bs5/dt-1.13.8/r-2.5.0/datatables.min.css"
+      href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"
       rel="stylesheet"
     />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/r-2.5.0/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+
+    <!-- google font -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,13 +50,11 @@
 
   <body>
     <div class="container">
-      <div class="row">
-        <table
-          id="example"
-          class="table table-striped nowrap"
-          style="width: 100%"
-        ></table>
-      </div>
+      <table
+        id="example"
+        class="table table-striped nowrap"
+        style="width: 100%"
+      ></table>
     </div>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
@@ -73,6 +81,8 @@
               },
             },
           ],
+          dom: "Bfrtip",
+          buttons: ["copy", "csv", "excel", "pdf", "print"],
         });
       }
     </script>
