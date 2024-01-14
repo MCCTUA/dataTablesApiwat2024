@@ -269,6 +269,7 @@
       })
 
       let updateDataTable = false
+      let table
 
       function showTable(res) {
         google.script.run
@@ -278,7 +279,8 @@
               return { title: header }
             })
             if (!updateDataTable) {
-              new DataTable('#example', {
+              // new DataTable("#example", {
+              table = $('#example').DataTable({
                 columns: headers,
                 data: dataSet,
                 responsive: true,
@@ -302,7 +304,7 @@
                   {
                     target: 7,
                     render: (data) => {
-                      return (data = `<button class="btn btn-warning"> <i class="fa-solid fa-pencil"></i> </button>`)
+                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`)
                     },
                   },
                   {
@@ -343,6 +345,18 @@
           $('#myPreview').attr('src', source)
           myPreview.style.display = 'block'
         }
+      }
+      function editData(el) {
+        $('#staticBackdrop').modal('show')
+        let rowData = table.row(el.parentNode.parentNode).data()
+        let data = [rowData][0]
+        $('#input1').val(data[0])
+        $('#input2').val(data[1])
+        $('#input3').val(data[2])
+        $('#input4').val(data[3])
+        $('#input5').val(data[4])
+        $('#input6').val(data[5])
+        $('#myPreview').attr('src', data[6])
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
