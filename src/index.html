@@ -177,6 +177,9 @@
                       <img id="myPreview" width="100px" class="mx-auto" />
                     </div>
 
+                    <input name="rowId" , id="rowId" hidden />
+                    <input id="targetFunc" hidden />
+
                     <div class="modal-footer">
                       <button
                         type="button"
@@ -222,7 +225,24 @@
       <!-- Modal end -->
     </div>
     <script>
-      function submitForm(obj) {
+      function submitForm(data) {
+        // let target = document.getElementById('targetFunc').value // กรณีที่เป็น Javascript
+        let target = $('#targetFunc').val()
+        switch (target) {
+          case 'add':
+            submitFormData(data)
+            break
+
+          case 'edit':
+            updateFormData(data)
+            break
+
+          default:
+            break
+        }
+      }
+
+      function submitFormData(obj) {
         event.preventDefault()
 
         Swal.fire({ title: 'รอสักครู่..' })
@@ -242,6 +262,28 @@
             showTable()
           })
           .saveData(obj)
+      }
+
+      function updateFormData(obj) {
+        event.preventDefault()
+
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
+
+        google.script.run
+          .withSuccessHandler(() => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'อัพเดตข้อมูลสำเร็จ',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
+          })
+          .updateData(obj)
       }
 
       function deleteRow(el) {
@@ -320,6 +362,7 @@
                     text: 'เพิ่มข้อมูล',
                     action: function (e, dt, node, config) {
                       $('#staticBackdrop').modal('show')
+                      setForm('add', 'เพิ่มข้อมูล')
                     },
                   },
                   { extend: 'copy', className: 'btn-success' },
@@ -339,6 +382,7 @@
           })
           .getData()
       }
+
       function previewImage(event) {
         if (event.target.files.length > 0) {
           let source = URL.createObjectURL(event.target.files[0])
@@ -346,10 +390,14 @@
           myPreview.style.display = 'block'
         }
       }
+
       function editData(el) {
         $('#staticBackdrop').modal('show')
         let rowData = table.row(el.parentNode.parentNode).data()
         let data = [rowData][0]
+        $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
+        setForm('edit', 'อัพเดตข้อมูล')
+
         $('#input1').val(data[0])
         $('#input2').val(data[1])
         $('#input3').val(data[2])
@@ -357,6 +405,11 @@
         $('#input5').val(data[4])
         $('#input6').val(data[5])
         $('#myPreview').attr('src', data[6])
+      }
+
+      function setForm(target, title) {
+        $('#targetFunc').val(target)
+        $('.modal-title').text(title)
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
