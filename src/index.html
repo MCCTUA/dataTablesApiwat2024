@@ -49,7 +49,7 @@
 
     <style>
       .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
       .centered {
         text-align: center !important;
@@ -168,7 +168,13 @@
                         class="form-control"
                         id="myfile"
                         name="myfile"
+                        accept="image/*"
+                        onchange="previewImage(event)"
                       />
+                    </div>
+
+                    <div>
+                      <img id="myPreview" width="100px" class="mx-auto" />
                     </div>
 
                     <div class="modal-footer">
@@ -204,7 +210,7 @@
           <div class="modal-content bg-body-tertiary">
             <div class="modal-header justify-content-center">
               <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                login by ครูอภิวัฒน์ สอนสร้างสื่อ
+                Basic login by ครูอภิวัฒน์ สอนสร้างสื่อ
               </h1>
             </div>
             <div class="modal-body">
@@ -217,102 +223,126 @@
     </div>
     <script>
       function submitForm(obj) {
-        event.preventDefault();
+        event.preventDefault()
 
-        Swal.fire({ title: "รอสักครู่.." });
-        Swal.showLoading();
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
 
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "บันทึกข้อมูลสำเร็จ",
+              position: 'center',
+              icon: 'success',
+              title: 'บันทึกข้อมูลสำเร็จ',
               showConfirmButton: false,
               timer: 1500,
-            });
-            document.getElementById("myForm").reset();
-            $("#staticBackdrop").modal("hide");
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
           })
-          .saveData(obj);
+          .saveData(obj)
       }
 
       function deleteRow(el) {
-        Swal.fire({ title: "กำลังลบข้อมูล.." });
-        Swal.showLoading();
+        Swal.fire({ title: 'กำลังลบข้อมูล..' })
+        Swal.showLoading()
 
-        const numId = el.parentNode.parentNode.cells[0].innerText;
+        const numId = el.parentNode.parentNode.cells[0].innerText
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "ลบข้อมูลสำเร็จ",
+              position: 'center',
+              icon: 'success',
+              title: 'ลบข้อมูลสำเร็จ',
               showConfirmButton: false,
               timer: 1500,
-            });
-
-            google.script.run.withSuccessHandler(showTable).getData();
+            })
+            showTable()
           })
-          .deleteRecord(numId);
+          .deleteRecord(numId)
       }
 
-      window.addEventListener("load", () => {
-        $("#Login").modal("show");
-        google.script.run.withSuccessHandler(showTable).getData();
-      });
+      window.addEventListener('load', () => {
+        $('#Login').modal('show')
+        showTable()
+      })
+
+      let updateDataTable = false
 
       function showTable(res) {
-        const dataSet = res.data;
-        const headers = res.headers.map((header) => {
-          return { title: header };
-        });
-        new DataTable("#example", {
-          columns: headers,
-          data: dataSet,
-          responsive: true,
-          destroy: true,
-          pageLength: 10,
-          language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
-          },
-          columnDefs: [
-            { className: "centered", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-            {
-              target: 6,
-              render: (data) => {
-                return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
-              },
-            },
-            {
-              target: 7,
-              render: (data) => {
-                return (data = `<button class="btn btn-warning"> <i class="fa-solid fa-pencil"></i> </button>`);
-              },
-            },
-            {
-              target: 8,
-              render: (data) => {
-                return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
-              },
-            },
-          ],
-          dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
-          buttons: [
-            {
-              text: "เพิ่มข้อมูล",
-              action: function (e, dt, node, config) {
-                $("#staticBackdrop").modal("show");
-              },
-            },
-            { extend: "copy", className: "btn-success" },
-            { extend: "csv", className: "btn-primary" },
-            { extend: "excel", className: "btn-danger" },
-            { extend: "pdf", className: "btn-info" },
-            { extend: "print", className: "btn-warning" },
-          ],
-          lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
-        });
+        google.script.run
+          .withSuccessHandler((res) => {
+            const dataSet = res.data
+            const headers = res.headers.map((header) => {
+              return { title: header }
+            })
+            if (!updateDataTable) {
+              new DataTable('#example', {
+                columns: headers,
+                data: dataSet,
+                responsive: true,
+                destroy: true,
+                order: [[0, 'desc']],
+                pageLength: 10,
+                language: {
+                  url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
+                },
+                columnDefs: [
+                  {
+                    className: 'centered',
+                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                  },
+                  {
+                    target: 6,
+                    render: (data) => {
+                      return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
+                    },
+                  },
+                  {
+                    target: 7,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-warning"> <i class="fa-solid fa-pencil"></i> </button>`)
+                    },
+                  },
+                  {
+                    target: 8,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
+                    },
+                  },
+                ],
+                dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
+                buttons: [
+                  {
+                    text: 'เพิ่มข้อมูล',
+                    action: function (e, dt, node, config) {
+                      $('#staticBackdrop').modal('show')
+                    },
+                  },
+                  { extend: 'copy', className: 'btn-success' },
+                  { extend: 'csv', className: 'btn-primary' },
+                  { extend: 'excel', className: 'btn-danger' },
+                  { extend: 'pdf', className: 'btn-info' },
+                  { extend: 'print', className: 'btn-warning' },
+                ],
+                lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
+              })
+              updateDataTable = true
+            } else {
+              // let table = document.getElementById('example').DataTable()
+              let table = $('#example').DataTable()
+              table.clear().rows.add(dataSet).draw()
+            }
+          })
+          .getData()
+      }
+      function previewImage(event) {
+        if (event.target.files.length > 0) {
+          let source = URL.createObjectURL(event.target.files[0])
+          $('#myPreview').attr('src', source)
+          myPreview.style.display = 'block'
+        }
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
