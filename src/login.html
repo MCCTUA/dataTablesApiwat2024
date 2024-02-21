@@ -1,10 +1,10 @@
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Anuphan', sans-serif;
+    font-family: "Anuphan", sans-serif;
   }
   .containerLogin {
     height: 80vh;
@@ -131,54 +131,54 @@
 </div>
 
 <script>
-  let dataUsers, status
+  let dataUsers, status;
 
   google.script.run
     .withSuccessHandler((result) => {
-      dataUsers = result
-      console.log('data users', dataUsers)
+      dataUsers = result;
+      console.log("data users", dataUsers);
     })
-    .getUser()
+    .getUser();
 
   function login(obj) {
     try {
-      Swal.fire({ title: 'รอสักครู่' })
-      Swal.showLoading()
-      event.preventDefault()
-      let username = obj.username.value
-      let password = obj.password.value
+      Swal.fire({ title: "รอสักครู่" });
+      Swal.showLoading();
+      event.preventDefault();
+      let username = obj.username.value;
+      let password = obj.password.value;
       let userLogin = dataUsers.find(
         (r) => r[0] == username && r[1] == password
-      )
-      console.log('user login :', userLogin)
+      );
+      console.log("user login :", userLogin);
 
       if (userLogin === undefined) {
         Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง!!',
+          position: "center",
+          icon: "error",
+          title: "ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง!!",
           showConfirmButton: false,
           timer: 1500,
-        })
+        });
       } else {
-        status = userLogin[2]
-        console.log(' user status :', status)
+        status = userLogin[2];
+        console.log(" user status :", status);
         Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'ลงชื่อเข้าใช้สำเร็จ',
+          position: "center",
+          icon: "success",
+          title: "ลงชื่อเข้าใช้สำเร็จ",
           showConfirmButton: false,
           timer: 1500,
-        })
-        $('#Login').modal('hide')
-        $('#example')
+        });
+        $("#Login").modal("hide");
+        $("#example")
           .DataTable()
           .column(8)
-          .visible(status === 'Admin')
+          .visible(status === "Admin");
       }
-      document.getElementById('formLogin').reset()
+      document.getElementById("formLogin").reset();
     } catch (error) {
-      console.error('Error', error)
+      console.error("Error", error);
     }
   }
 </script>
