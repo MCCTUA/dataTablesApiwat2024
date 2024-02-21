@@ -6,6 +6,10 @@ function doGet() {
 }
 
 //----------------------------------------------------------------------
+/**
+ * Include File
+ */
+
 function include(file) {
   return HtmlService.createHtmlOutputFromFile(file).getContent()
 }
@@ -97,6 +101,10 @@ function updateData(obj) {
   }
 }
 
+/**
+ * Delete ลบข้อมูลใน Sheet
+ */
+
 function deleteRecord(numId) {
   const { ss, idRow } = getDataWorkSheet()
   let index = idRow.indexOf(numId)
@@ -106,4 +114,16 @@ function deleteRecord(numId) {
   DriveApp.getFileById(idFile).setTrashed(true)
   // ลบข้อมูลใน sheet
   ss.deleteRow(index + 1)
+}
+
+/**
+ * Check User Status เช็คสิทธิ์
+ */
+
+function getUser() {
+  const ssUser = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('user')
+  const dbUser = ssUser.getDataRange().getDisplayValues().slice(1)
+
+  console.log(dbUser)
+  return dbUser
 }

@@ -418,7 +418,7 @@
                   url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
                 },
                 columnDefs: [
-                  { className: 'centered', targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                  { className: 'centered', targets: ['_all'] },
                   {
                     target: 6,
                     render: (data) => {
@@ -426,7 +426,13 @@
                     },
                   },
                   {
-                    target: 7,
+                    target: -2,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-success" onclick="editData(this)"> <i class="fa-solid fa-download"></i> </button>`)
+                    },
+                  },
+                  {
+                    target: -1,
                     render: (data) => {
                       return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
                     },
