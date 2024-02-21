@@ -400,6 +400,19 @@
                 responsive: true,
                 destroy: true,
                 order: [[0, 'desc']],
+                responsive: {
+                  details: {
+                    display: DataTable.Responsive.display.modal({
+                      header: function (row) {
+                        var data = row.data()
+                        return 'ข้อมูลของ ' + data[1]
+                      },
+                    }),
+                    renderer: DataTable.Responsive.renderer.tableAll({
+                      tableClass: 'table',
+                    }),
+                  },
+                },
                 pageLength: 10,
                 language: {
                   url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',

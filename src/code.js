@@ -46,7 +46,11 @@ function saveData(obj) {
       "'" + obj.input3,
       obj.input4,
       obj.input5,
-      obj.input6,
+      new Date(obj.input6).toLocaleDateString('th-TH', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }),
       `https://lh3.googleUserContent.com/d/${fileId}`,
     ])
   } else {
