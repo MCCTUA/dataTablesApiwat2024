@@ -1,10 +1,10 @@
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap");
+  @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Anuphan", sans-serif;
+    font-family: 'Anuphan', sans-serif;
   }
   .containerLogin {
     height: 80vh;
@@ -103,7 +103,7 @@
 </style>
 
 <div class="containerLogin">
-  <form class="form_main" id="myForm" onsubmit="login(this)">
+  <form class="form_main" id="formLogin" onsubmit="login(this)">
     <p class="heading">ลงชื่อเข้าใช้</p>
 
     <div class="inputContainer">
@@ -132,29 +132,29 @@
 
 <script>
   function login(obj) {
-    Swal.fire({ title: "รอสักครู่" });
-    Swal.showLoading();
-    event.preventDefault();
-    let username = obj.username.value;
-    let password = obj.password.value;
-    if (username == "admin" && password == "pass") {
+    Swal.fire({ title: 'รอสักครู่' })
+    Swal.showLoading()
+    event.preventDefault()
+    let username = obj.username.value
+    let password = obj.password.value
+    if (username == 'admin' && password == 'pass') {
       Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "ลงชื่อเข้าใช้สำเร็จ",
+        position: 'center',
+        icon: 'success',
+        title: 'ลงชื่อเข้าใช้สำเร็จ',
         showConfirmButton: false,
         timer: 1500,
-      });
-      $("#Login").modal("hide");
+      })
+      $('#Login').modal('hide')
     } else {
       Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง!!",
+        position: 'center',
+        icon: 'error',
+        title: 'ชื่อผู้ใช้/รหัสผ่าน ไม่ถูกต้อง!!',
         showConfirmButton: false,
         timer: 1500,
-      });
+      })
     }
-    document.getElementById("myForm").reset();
+    document.getElementById('formLogin').reset()
   }
 </script>

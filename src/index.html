@@ -100,12 +100,13 @@
                 <div class="modal-body">
                   <form class="row g-3" id="myForm" onsubmit="submitForm(this)">
                     <div class="col-md-6">
-                      <label for="inputEmail4" class="form-label">เลขที่</label>
+                      <label for="inputEmail4" class="form-label">id</label>
                       <input
                         type="text"
                         class="form-control"
                         id="input1"
                         name="input1"
+                        disabled
                       />
                     </div>
                     <div class="col-md-6">
@@ -176,8 +177,9 @@
                     <div>
                       <img id="myPreview" width="100px" class="mx-auto" />
                     </div>
-
+                    <!-- input เพื่อเก็บค่า id แบบซ่อน -->
                     <input name="rowId" , id="rowId" hidden />
+                    <!-- input เพื่อเลือก function ว่าเป็นการเพิ่มข้อมูลหรือ update ข้อมูล เนื่องจากเราใช้ form ตัวเดียวกันทั้ง เพิ่มและ update ข้อมูล-->
                     <input id="targetFunc" hidden />
 
                     <div class="modal-footer">
@@ -223,6 +225,48 @@
         </div>
       </div>
       <!-- Modal end -->
+
+      <!-- Modal password (for confirm ก่อน Delete ข้อมุล - หลังกด Icon delete) -->
+      <div
+        class="modal fade"
+        id="passwordModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">รหัสผ่าน</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <input
+                type="password"
+                class="form-control"
+                id="pass"
+                placeholder="กรอกรหัสผ่าน"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                id="btnModalPassword"
+                class="btn btn-primary"
+              >
+                ตกลง
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
       function submitForm(data) {
@@ -287,22 +331,50 @@
       }
 
       function deleteRow(el) {
-        Swal.fire({ title: 'กำลังลบข้อมูล..' })
-        Swal.showLoading()
+        const passwordForDeleteId = document.getElementById('passwordModal')
+        const btnModalPassword = document.getElementById('btnModalPassword')
+        const passwordInput = document.getElementById('pass')
+        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId)
 
-        const numId = el.parentNode.parentNode.cells[0].innerText
-        google.script.run
-          .withSuccessHandler(() => {
+        passwordForDeleteModal.show()
+
+        btnModalPassword.addEventListener('click', function () {
+          if (passwordInput.value === 'pass1234') {
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'ลบข้อมูลสำเร็จ',
+              title: 'รหัสผ่านถูกต้อง',
               showConfirmButton: false,
               timer: 1500,
             })
-            showTable()
-          })
-          .deleteRecord(numId)
+            passwordForDeleteModal.hide()
+            Swal.fire({ title: 'กำลังลบข้อมูล..' })
+            Swal.showLoading()
+
+            const numId = el.parentNode.parentNode.cells[0].innerText
+            google.script.run
+              .withSuccessHandler(() => {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'ลบข้อมูลสำเร็จ',
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
+                showTable()
+              })
+              .deleteRecord(numId)
+          } else {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'รหัสผ่านไม่ถูกต้อง',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            passwordInput.value = ''
+          }
+        })
       }
 
       window.addEventListener('load', () => {
@@ -333,10 +405,7 @@
                   url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
                 },
                 columnDefs: [
-                  {
-                    className: 'centered',
-                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-                  },
+                  { className: 'centered', targets: [0, 1, 2, 3, 4, 5, 6, 7] },
                   {
                     target: 6,
                     render: (data) => {
@@ -346,13 +415,7 @@
                   {
                     target: 7,
                     render: (data) => {
-                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`)
-                    },
-                  },
-                  {
-                    target: 8,
-                    render: (data) => {
-                      return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
+                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
                     },
                   },
                 ],
@@ -394,8 +457,12 @@
       function editData(el) {
         $('#staticBackdrop').modal('show')
         let rowData = table.row(el.parentNode.parentNode).data()
+        // $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
+        // หา element ที่มี id เป็น 'rowId' และกำหนดค่าให้กับคุณสมบัติ value ด้วยค่าที่อยู่ในเซลล์แรกของแถวที่ถูกคลิก
+        document.getElementById('rowId').value =
+          el.parentNode.parentNode.cells[0].innerHTML
+
         let data = [rowData][0]
-        $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
         setForm('edit', 'อัพเดตข้อมูล')
 
         $('#input1').val(data[0])
@@ -411,6 +478,11 @@
         $('#targetFunc').val(target)
         $('.modal-title').text(title)
       }
+
+      // เมื่อมีการปิด form (event : hidden.bs.modal, ให้ this===modal ทำการ reset form เพื่อไมให้มีค่าค้างอยุ่ในช่่อง input)
+      $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset')
+      })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
