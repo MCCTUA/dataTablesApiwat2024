@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+
+    <!-- jquery -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- datatables -->
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+
+    <!-- google font -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .centered {
+        text-align: center !important;
+        vertical-align: middle !important;
+      }
+      table.dataTable tr:hover td {
+        background-color: #e1f7f350 !important;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-3">
+      <div class="row mb-3">
+        <div class="col">
+          <!-- Button trigger modal -->
+          <!-- ย้ายปุ่มไปอยู่ใน datatables -->
+          <!-- <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
+            เพิ่มข้อมูล
+          </button> -->
+
+          <!-- Modal -->
+
+          <div
+            class="modal fade"
+            id="staticBackdrop"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    เพิ่มข้อมูล
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form class="row g-3" id="myForm" onsubmit="submitForm(this)">
+                    <div class="col-md-6">
+                      <label for="inputEmail4" class="form-label">id</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input1"
+                        name="input1"
+                        disabled
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputPassword4" class="form-label"
+                        >ชื่อ-สกุล</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input2"
+                        name="input2"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputAddress" class="form-label"
+                        >เบอร์โทร</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input3"
+                        name="input3"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputAddress2" class="form-label"
+                        >อีเมล</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="input4"
+                        name="input4"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputCity" class="form-label">ชื่อเล่น</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input5"
+                        name="input5"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputZip" class="form-label">วันเกิด</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="input6"
+                        name="input6"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputZip" class="form-label"
+                        >Upload File</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="myfile"
+                        name="myfile"
+                        accept="image/*"
+                        onchange="previewImage(event)"
+                      />
+                    </div>
+
+                    <div>
+                      <img id="myPreview" width="100px" class="mx-auto" />
+                    </div>
+                    <!-- input เพื่อเก็บค่า id แบบซ่อน -->
+                    <input name="rowId" , id="rowId" hidden />
+                    <!-- input เพื่อเลือก function ว่าเป็นการเพิ่มข้อมูลหรือ update ข้อมูล เนื่องจากเราใช้ form ตัวเดียวกันทั้ง เพิ่มและ update ข้อมูล-->
+                    <input id="targetFunc" hidden />
+
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        ปิด
+                      </button>
+                      <button type="submit" class="btn btn-primary">
+                        บันทึกข้อมูล
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table
+        id="example"
+        class="table table-striped centered"
+        style="width: 100%"
+      >
+        <thead class="table-dark"></thead>
+      </table>
+
+      <!-- Modal Login -->
+      <div class="modal fade" id="Login">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content bg-body-tertiary">
+            <div class="modal-header justify-content-center">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                Basic login by ครูอภิวัฒน์ สอนสร้างสื่อ
+              </h1>
+            </div>
+            <div class="modal-body">
+              <?!=include('login')?>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal end -->
+
+      <!-- Modal password (for confirm ก่อน Delete ข้อมุล - หลังกด Icon delete) -->
+      <div
+        class="modal fade"
+        id="passwordModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">รหัสผ่าน</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <input
+                type="password"
+                class="form-control"
+                id="pass"
+                placeholder="กรอกรหัสผ่าน"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                id="btnModalPassword"
+                class="btn btn-primary"
+              >
+                ตกลง
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function submitForm(data) {
+        // let target = document.getElementById('targetFunc').value // กรณีที่เป็น Javascript
+        let target = $('#targetFunc').val()
+        switch (target) {
+          case 'add':
+            submitFormData(data)
+            break
+
+          case 'edit':
+            updateFormData(data)
+            break
+
+          default:
+            break
+        }
+      }
+
+      function submitFormData(obj) {
+        event.preventDefault()
+
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
+
+        google.script.run
+          .withSuccessHandler(() => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'บันทึกข้อมูลสำเร็จ',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
+          })
+          .saveData(obj)
+      }
+
+      function updateFormData(obj) {
+        event.preventDefault()
+
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
+
+        google.script.run
+          .withSuccessHandler(() => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'อัพเดตข้อมูลสำเร็จ',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
+          })
+          .updateData(obj)
+      }
+
+      function deleteRow(el) {
+        const passwordForDeleteId = document.getElementById('passwordModal')
+        const btnModalPassword = document.getElementById('btnModalPassword')
+        const passwordInput = document.getElementById('pass')
+        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId)
+
+        passwordForDeleteModal.show()
+
+        btnModalPassword.addEventListener('click', function () {
+          if (passwordInput.value === 'pass1234') {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'รหัสผ่านถูกต้อง',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            passwordForDeleteModal.hide()
+            Swal.fire({ title: 'กำลังลบข้อมูล..' })
+            Swal.showLoading()
+
+            const numId = el.parentNode.parentNode.cells[0].innerText
+            google.script.run
+              .withSuccessHandler(() => {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'ลบข้อมูลสำเร็จ',
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
+                showTable()
+              })
+              .deleteRecord(numId)
+          } else {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'รหัสผ่านไม่ถูกต้อง',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            passwordInput.value = ''
+          }
+        })
+      }
+
+      window.addEventListener('load', () => {
+        $('#Login').modal('show')
+        showTable()
+      })
+
+      let updateDataTable = false
+      let table
+
+      function showTable(res) {
+        google.script.run
+          .withSuccessHandler((res) => {
+            const dataSet = res.data
+            const headers = res.headers.map((header) => {
+              return { title: header }
+            })
+            if (!updateDataTable) {
+              // new DataTable("#example", {
+              table = $('#example').DataTable({
+                columns: headers,
+                data: dataSet,
+                responsive: true,
+                destroy: true,
+                order: [[0, 'desc']],
+                responsive: {
+                  details: {
+                    display: DataTable.Responsive.display.modal({
+                      header: function (row) {
+                        var data = row.data()
+                        return 'ข้อมูลของ ' + data[1]
+                      },
+                    }),
+                    renderer: DataTable.Responsive.renderer.tableAll({
+                      tableClass: 'table',
+                    }),
+                  },
+                },
+                pageLength: 10,
+                language: {
+                  url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
+                },
+                columnDefs: [
+                  {
+                    width: 100,
+                    targets: 2, 
+                  },
+                  { className: 'centered', targets: ['_all'] },
+                  {
+                    target: 5,
+                    render: (data) => {
+                      if (data === 'ผู้จัดการ') {
+                        return `<div class="progress">
+                                  <div class="progress-bar progress-bar-striped  progress-bar-animated bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ผู้จัดการ</div>
+                                </div>`
+                      } else if (data === 'พนักงาน') {
+                        return `<div class="progress">
+                                  <div class="progress-bar progress-bar-striped  progress-bar-animated bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">พนักงาน</div>
+                                </div>`
+                      } else if (data === 'ลูกจ้างชั่วคราว') {
+                        return `<div class="progress">
+                                  <div class="progress-bar progress-bar-striped  progress-bar-animated bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างชั่วคราว</div>
+                                </div>`
+                      } else {
+                        return `<div class="progress">
+                                  <div class="progress-bar progress-bar-striped  progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างประจำ</div>
+                                </div>`
+                      }
+                    },
+                  },
+                  {
+                    target: -3,
+                    render: (data) => {
+                      return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
+                    },
+                  },
+                  {
+                    target: -2,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-sm btn-success" onclick="detail(this)"> <i class="fa-solid fa-eye"></i> </button>`)
+                    },
+                  },
+                  {
+                    target: -1,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
+                    },
+                  },
+                ],
+                dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
+                buttons: [
+                  {
+                    text: 'เพิ่มข้อมูล',
+                    action: function (e, dt, node, config) {
+                      $('#staticBackdrop').modal('show')
+                      setForm('add', 'เพิ่มข้อมูล')
+                    },
+                  },
+                  { extend: 'copy', className: 'btn-success' },
+                  { extend: 'csv', className: 'btn-primary' },
+                  { extend: 'excel', className: 'btn-danger' },
+                  { extend: 'pdf', className: 'btn-info' },
+                  { extend: 'print', className: 'btn-warning' },
+                ],
+                lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
+              })
+              updateDataTable = true
+            } else {
+              // let table = document.getElementById('example').DataTable()
+              let table = $('#example').DataTable()
+              table.clear().rows.add(dataSet).draw()
+            }
+          })
+          .getData()
+      }
+
+      function previewImage(event) {
+        if (event.target.files.length > 0) {
+          let source = URL.createObjectURL(event.target.files[0])
+          $('#myPreview').attr('src', source)
+          myPreview.style.display = 'block'
+        }
+      }
+
+      function editData(el) {
+        $('#staticBackdrop').modal('show')
+        let rowData = table.row(el.parentNode.parentNode).data()
+        // $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
+        // หา element ที่มี id เป็น 'rowId' และกำหนดค่าให้กับคุณสมบัติ value ด้วยค่าที่อยู่ในเซลล์แรกของแถวที่ถูกคลิก
+        document.getElementById('rowId').value =
+          el.parentNode.parentNode.cells[0].innerHTML
+
+        let data = [rowData][0]
+        setForm('edit', 'อัพเดตข้อมูล')
+
+        $('#input1').val(data[0])
+        $('#input2').val(data[1])
+        $('#input3').val(data[2])
+        $('#input4').val(data[3])
+        $('#input5').val(data[4])
+        $('#input6').val(data[5])
+        $('#myPreview').attr('src', data[6])
+      }
+
+      function setForm(target, title) {
+        $('#targetFunc').val(target)
+        $('.modal-title').text(title)
+      }
+
+      // เมื่อมีการปิด form (event : hidden.bs.modal, ให้ this===modal ทำการ reset form เพื่อไมให้มีค่าค้างอยุ่ในช่่อง input)
+      $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset')
+      })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
