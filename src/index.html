@@ -156,12 +156,23 @@
                       />
                     </div>
                     <div class="col-md-6">
+                      <label for="inputCity" class="form-label"
+                        >ตำแหน่งงาน</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="input6"
+                        name="input6"
+                      />
+                    </div>
+                    <div class="col-md-6">
                       <label for="inputZip" class="form-label">วันเกิด</label>
                       <input
                         type="date"
                         class="form-control"
-                        id="input6"
-                        name="input6"
+                        id="input7"
+                        name="input7"
                       />
                     </div>
                     <div class="col-md-6">
@@ -173,7 +184,7 @@
                         class="form-control"
                         id="myfile"
                         name="myfile"
-                        accept="image/*"
+                        accept="application/pdf, image/*"
                         onchange="previewImage(event)"
                       />
                     </div>
@@ -390,109 +401,119 @@
       let table;
 
       function showTable(res) {
-        google.script.run
-          .withSuccessHandler((res) => {
-            const dataSet = res.data;
-            const headers = res.headers.map((header) => {
-              return { title: header };
-            });
-            if (!updateDataTable) {
-              // new DataTable("#example", {
-              table = $("#example").DataTable({
-                columns: headers,
-                data: dataSet,
-                responsive: true,
-                destroy: true,
-                order: [[0, "desc"]],
-                responsive: {
-                  details: {
-                    display: DataTable.Responsive.display.modal({
-                      header: function (row) {
-                        var data = row.data();
-                        return "ข้อมูลของ " + data[1];
-                      },
-                    }),
-                    renderer: DataTable.Responsive.renderer.tableAll({
-                      tableClass: "table",
-                    }),
+        try {
+          google.script.run
+            .withSuccessHandler((res) => {
+              const dataSet = res.data;
+              const headers = res.headers.map((header) => {
+                return { title: header };
+              });
+              if (!updateDataTable) {
+                // new DataTable("#example", {
+                table = $("#example").DataTable({
+                  columns: headers,
+                  data: dataSet,
+                  responsive: true,
+                  destroy: true,
+                  order: [[0, "desc"]],
+                  responsive: {
+                    details: {
+                      display: DataTable.Responsive.display.modal({
+                        header: function (row) {
+                          var data = row.data();
+                          return "ข้อมูลของ " + data[1];
+                        },
+                      }),
+                      renderer: DataTable.Responsive.renderer.tableAll({
+                        tableClass: "table",
+                      }),
+                    },
                   },
-                },
-                pageLength: 10,
-                language: {
-                  url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
-                },
-                columnDefs: [
-                  {
-                    width: 100,
-                    targets: 2,
+                  pageLength: 10,
+                  language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
                   },
-                  { className: "centered", targets: ["_all"] },
-                  {
-                    target: 5,
-                    render: (data) => {
-                      if (data === "ผู้จัดการ") {
-                        return `<div class="progress">
+                  columnDefs: [
+                    {
+                      width: 100, // ปรับความกว้าง column โดย target คือ column ที่2
+                      targets: 2,
+                    },
+                    { className: "centered", targets: ["_all"] },
+                    {
+                      target: 5,
+                      render: (data) => {
+                        if (data === "ผู้จัดการ") {
+                          return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ผู้จัดการ</div>
                                 </div>`;
-                      } else if (data === "พนักงาน") {
-                        return `<div class="progress">
+                        } else if (data === "พนักงาน") {
+                          return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">พนักงาน</div>
                                 </div>`;
-                      } else if (data === "ลูกจ้างชั่วคราว") {
-                        return `<div class="progress">
+                        } else if (data === "ลูกจ้างชั่วคราว") {
+                          return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างชั่วคราว</div>
                                 </div>`;
-                      } else {
-                        return `<div class="progress">
+                        } else {
+                          return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างประจำ</div>
                                 </div>`;
-                      }
+                        }
+                      },
                     },
-                  },
-                  {
-                    target: -3,
-                    render: (data) => {
-                      return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
+                    {
+                      target: -4,
+                      render: (data) => {
+                        return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
+                      },
                     },
-                  },
-                  {
-                    target: -2,
-                    render: (data) => {
-                      return (data = `<button class="btn btn-sm btn-success" onclick="detail(this)"> <i class="fa-solid fa-eye"></i> </button>`);
+                    {
+                      target: -3,
+                      render: (data) => {
+                        return (data = `<button class="btn btn-sm btn-warning" onclick="download(this)"> <i class="fa-solid fa-download"></i> </button>`);
+                      },
                     },
-                  },
-                  {
-                    target: -1,
-                    render: (data) => {
-                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
+                    {
+                      target: -2,
+                      render: (data) => {
+                        return (data = `<button class="btn btn-sm btn-success" onclick="showPopup(this)"> <i class="fa-solid fa-eye"></i> </button>`);
+                      },
                     },
-                  },
-                ],
-                dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
-                buttons: [
-                  {
-                    text: "เพิ่มข้อมูล",
-                    action: function (e, dt, node, config) {
-                      $("#staticBackdrop").modal("show");
-                      setForm("add", "เพิ่มข้อมูล");
+                    {
+                      target: -1,
+                      render: (data) => {
+                        return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
+                      },
                     },
-                  },
-                  { extend: "copy", className: "btn-success" },
-                  { extend: "csv", className: "btn-primary" },
-                  { extend: "excel", className: "btn-danger" },
-                  { extend: "pdf", className: "btn-info" },
-                  { extend: "print", className: "btn-warning" },
-                ],
-                lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
-              });
-              updateDataTable = true;
-            } else {
-              // let table = document.getElementById('example').DataTable()
-              let table = $("#example").DataTable();
-              table.clear().rows.add(dataSet).draw();
-            }
-          })
-          .getData();
+                  ],
+                  dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
+                  buttons: [
+                    {
+                      text: "เพิ่มข้อมูล",
+                      action: function (e, dt, node, config) {
+                        $("#staticBackdrop").modal("show");
+                        setForm("add", "เพิ่มข้อมูล");
+                      },
+                    },
+                    { extend: "copy", className: "btn-success" },
+                    { extend: "csv", className: "btn-primary" },
+                    { extend: "excel", className: "btn-danger" },
+                    { extend: "pdf", className: "btn-info" },
+                    { extend: "print", className: "btn-warning" },
+                  ],
+                  lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
+                });
+                updateDataTable = true;
+              } else {
+                // let table = document.getElementById('example').DataTable()
+                let table = $("#example").DataTable();
+                table.clear().rows.add(dataSet).draw();
+              }
+            })
+            .getData();
+        } catch (error) {
+          console.error("error", error);
+        }
       }
 
       function previewImage(event) {
@@ -501,6 +522,41 @@
           $("#myPreview").attr("src", source);
           myPreview.style.display = "block";
         }
+      }
+
+      function convertThaiDateToISO(dateString) {
+        // แยกส่วนของวันที่ออกจากกัน
+        const parts = dateString.split(" ");
+
+        // แยกส่วนของวันที่ เดือน และปีออกจากกัน
+        const day = parseInt(parts[0]);
+        const monthName = parts[1];
+        const year = parseInt(parts[2]);
+
+        // สร้างรายการของเดือนในปฏิทิน
+        const months = {
+          มกราคม: 1,
+          กุมภาพันธ์: 2,
+          มีนาคม: 3,
+          เมษายน: 4,
+          พฤษภาคม: 5,
+          มิถุนายน: 6,
+          กรกฎาคม: 7,
+          สิงหาคม: 8,
+          กันยายน: 9,
+          ตุลาคม: 10,
+          พฤศจิกายน: 11,
+          ธันวาคม: 12,
+        };
+
+        // ดึงค่าเดือนจากออบเจ็กต์เดือน
+        const month = months[monthName];
+
+        // สร้างวัตถุ Date ด้วยค่าวันที่  เดือน และปีที่ได้จากข้อมูล
+        const date = new Date(year, month - 1, day);
+
+        // คืนค่าวัตถุ Date ในรูปแบบ ISO string
+        return date.toISOString().slice(0, 10);
       }
 
       function editData(el) {
@@ -512,7 +568,10 @@
           el.parentNode.parentNode.cells[0].innerHTML;
 
         let data = [rowData][0];
+        console.log("data edit data :", data);
         setForm("edit", "อัพเดตข้อมูล");
+        console.log("date :", data[6]);
+        console.log("date :", convertThaiDateToISO(data[6]));
 
         $("#input1").val(data[0]);
         $("#input2").val(data[1]);
@@ -520,7 +579,8 @@
         $("#input4").val(data[3]);
         $("#input5").val(data[4]);
         $("#input6").val(data[5]);
-        $("#myPreview").attr("src", data[6]);
+        $("#input7").val(convertThaiDateToISO(data[6]));
+        $("#myPreview").attr("src", data[7]);
       }
 
       function setForm(target, title) {
@@ -532,6 +592,80 @@
       $(".modal").on("hidden.bs.modal", function () {
         $(this).find("form").trigger("reset");
       });
+
+      function download(el) {
+        let rowData = table.row(el.parentNode.parentNode).data();
+        fetch(rowData[7])
+          .then((res) => res.blob())
+          .then((blob) => {
+            let url = URL.createObjectURL(blob);
+            const a = document.createElement(`a`);
+            a.href = url;
+            a.download = "image.png";
+            a.click();
+            URL.revokeObjectURL(url);
+          });
+      }
+
+      function showPopup(el) {
+        let rowData = table.row(el.parentNode.parentNode).data();
+        let colData = [rowData][0];
+        Swal.fire({
+          showConfirmButton: false,
+          showCloseButton: true,
+          html: `<table class="table table-striped text-start">
+          <thead>
+            <tr>
+              <th colspan="2" class="text-center">
+                <img src = ${colData[7]} width="200px" >
+              </th>
+            </tr>
+          </thead>
+          <tr>
+            <th colspan="2" class="text-center">
+              ข้อมูล
+            </th>
+          </tr>
+          <tr>
+            <th>
+              ชื่อ-สกุล
+            </th>
+            <td>${colData[1]} </td>
+          </tr>
+          <tr>
+            <th>
+              เบอร์โทร
+            </th>
+            <td>${colData[2]} </td>
+          </tr>
+          <tr>
+            <th>
+              Email
+            </th>
+            <td>${colData[3]} </td>
+          </tr>
+          <tr>
+            <th>
+              ชื่อเล่น
+            </th>
+            <td>${colData[4]} </td>
+          </tr>
+          <tr>
+            <th>
+              ตำแหน่ง
+            </th>
+            <td>${colData[5]} </td>
+          </tr>
+          <tr>
+            <th>
+              วันเกิด
+            </th>
+            <td>${colData[6]} </td>
+          </tr>
+          </table>
+          `,
+        });
+      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
