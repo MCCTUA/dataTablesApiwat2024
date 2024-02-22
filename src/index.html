@@ -49,7 +49,7 @@
 
     <style>
       .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
       }
       .centered {
         text-align: center !important;
@@ -159,24 +159,11 @@
                       <label for="inputCity" class="form-label"
                         >ตำแหน่งงาน</label
                       >
-                      <label for="inputCity" class="form-label"
-                        >ตำแหน่งงาน</label
-                      >
                       <input
-                        type="text"
                         type="text"
                         class="form-control"
                         id="input6"
                         name="input6"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputZip" class="form-label">วันเกิด</label>
-                      <input
-                        type="date"
-                        class="form-control"
-                        id="input7"
-                        name="input7"
                       />
                     </div>
                     <div class="col-md-6">
@@ -197,7 +184,6 @@
                         class="form-control"
                         id="myfile"
                         name="myfile"
-                        accept="application/pdf, image/*"
                         accept="application/pdf, image/*"
                         onchange="previewImage(event)"
                       />
@@ -300,119 +286,119 @@
     <script>
       function submitForm(data) {
         // let target = document.getElementById('targetFunc').value // กรณีที่เป็น Javascript
-        let target = $('#targetFunc').val()
+        let target = $("#targetFunc").val();
         switch (target) {
-          case 'add':
-            submitFormData(data)
-            break
+          case "add":
+            submitFormData(data);
+            break;
 
-          case 'edit':
-            updateFormData(data)
-            break
+          case "edit":
+            updateFormData(data);
+            break;
 
           default:
-            break
+            break;
         }
       }
 
       function submitFormData(obj) {
-        event.preventDefault()
+        event.preventDefault();
 
-        Swal.fire({ title: 'รอสักครู่..' })
-        Swal.showLoading()
+        Swal.fire({ title: "รอสักครู่.." });
+        Swal.showLoading();
 
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'บันทึกข้อมูลสำเร็จ',
+              position: "center",
+              icon: "success",
+              title: "บันทึกข้อมูลสำเร็จ",
               showConfirmButton: false,
               timer: 1500,
-            })
-            document.getElementById('myForm').reset()
-            $('#staticBackdrop').modal('hide')
-            showTable()
+            });
+            document.getElementById("myForm").reset();
+            $("#staticBackdrop").modal("hide");
+            showTable();
           })
-          .saveData(obj)
+          .saveData(obj);
       }
 
       function updateFormData(obj) {
-        event.preventDefault()
+        event.preventDefault();
 
-        Swal.fire({ title: 'รอสักครู่..' })
-        Swal.showLoading()
+        Swal.fire({ title: "รอสักครู่.." });
+        Swal.showLoading();
 
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'อัพเดตข้อมูลสำเร็จ',
+              position: "center",
+              icon: "success",
+              title: "อัพเดตข้อมูลสำเร็จ",
               showConfirmButton: false,
               timer: 1500,
-            })
-            document.getElementById('myForm').reset()
-            $('#staticBackdrop').modal('hide')
-            showTable()
+            });
+            document.getElementById("myForm").reset();
+            $("#staticBackdrop").modal("hide");
+            showTable();
           })
-          .updateData(obj)
+          .updateData(obj);
       }
 
       function deleteRow(el) {
-        const passwordForDeleteId = document.getElementById('passwordModal')
-        const btnModalPassword = document.getElementById('btnModalPassword')
-        const passwordInput = document.getElementById('pass')
-        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId)
+        const passwordForDeleteId = document.getElementById("passwordModal");
+        const btnModalPassword = document.getElementById("btnModalPassword");
+        const passwordInput = document.getElementById("pass");
+        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId);
 
-        passwordForDeleteModal.show()
+        passwordForDeleteModal.show();
 
-        btnModalPassword.addEventListener('click', function () {
-          if (passwordInput.value === 'pass1234') {
+        btnModalPassword.addEventListener("click", function () {
+          if (passwordInput.value === "pass1234") {
             Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'รหัสผ่านถูกต้อง',
+              position: "center",
+              icon: "success",
+              title: "รหัสผ่านถูกต้อง",
               showConfirmButton: false,
               timer: 1500,
-            })
-            passwordForDeleteModal.hide()
-            Swal.fire({ title: 'กำลังลบข้อมูล..' })
-            Swal.showLoading()
+            });
+            passwordForDeleteModal.hide();
+            Swal.fire({ title: "กำลังลบข้อมูล.." });
+            Swal.showLoading();
 
-            const numId = el.parentNode.parentNode.cells[0].innerText
+            const numId = el.parentNode.parentNode.cells[0].innerText;
             google.script.run
               .withSuccessHandler(() => {
                 Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: 'ลบข้อมูลสำเร็จ',
+                  position: "center",
+                  icon: "success",
+                  title: "ลบข้อมูลสำเร็จ",
                   showConfirmButton: false,
                   timer: 1500,
-                })
-                showTable()
+                });
+                showTable();
               })
-              .deleteRecord(numId)
+              .deleteRecord(numId);
           } else {
             Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'รหัสผ่านไม่ถูกต้อง',
+              position: "center",
+              icon: "error",
+              title: "รหัสผ่านไม่ถูกต้อง",
               showConfirmButton: false,
               timer: 1500,
-            })
-            passwordInput.value = ''
+            });
+            passwordInput.value = "";
           }
-        })
+        });
       }
 
-      window.addEventListener('load', () => {
-        $('#Login').modal('show')
-        showTable()
-      })
+      window.addEventListener("load", () => {
+        $("#Login").modal("show");
+        showTable();
+      });
 
-      let updateDataTable = false
-      let table
+      let updateDataTable = false;
+      let table;
 
       function showTable(res) {
         try {
@@ -574,12 +560,12 @@
       }
 
       function editData(el) {
-        $('#staticBackdrop').modal('show')
-        let rowData = table.row(el.parentNode.parentNode).data()
+        $("#staticBackdrop").modal("show");
+        let rowData = table.row(el.parentNode.parentNode).data();
         // $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
         // หา element ที่มี id เป็น 'rowId' และกำหนดค่าให้กับคุณสมบัติ value ด้วยค่าที่อยู่ในเซลล์แรกของแถวที่ถูกคลิก
-        document.getElementById('rowId').value =
-          el.parentNode.parentNode.cells[0].innerHTML
+        document.getElementById("rowId").value =
+          el.parentNode.parentNode.cells[0].innerHTML;
 
         let data = [rowData][0];
         console.log("data edit data :", data);
@@ -598,8 +584,8 @@
       }
 
       function setForm(target, title) {
-        $('#targetFunc').val(target)
-        $('.modal-title').text(title)
+        $("#targetFunc").val(target);
+        $(".modal-title").text(title);
       }
 
       // เมื่อมีการปิด form (event : hidden.bs.modal, ให้ this===modal ทำการ reset form เพื่อไมให้มีค่าค้างอยุ่ในช่่อง input)
