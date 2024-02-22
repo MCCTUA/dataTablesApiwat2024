@@ -88,8 +88,9 @@ function updateData(obj) {
     // เช็คว่ามี file ถูก upload มาหรือไม่
     if (obj.myfile.length > 0) {
       let file = folder.createFile(obj.myfile)
-      let newLink = `https://lh3.googleUserContent.com/d/${file.getUrl().split('/')[5]
-        }`
+      let newLink = `https://lh3.googleUserContent.com/d/${
+        file.getUrl().split('/')[5]
+      }`
       //ลบไฟล์เก่าทิ้ง
       DriveApp.getFileById(oldLink.split('/')[4]).setTrashed(true)
       saveLink = newLink
