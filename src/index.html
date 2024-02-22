@@ -49,7 +49,7 @@
 
     <style>
       .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
       .centered {
         text-align: center !important;
@@ -208,7 +208,6 @@
       <table
         id="example"
         class="table table-striped centered"
-        class="table table-striped centered"
         style="width: 100%"
       >
         <thead class="table-dark"></thead>
@@ -276,151 +275,151 @@
     <script>
       function submitForm(data) {
         // let target = document.getElementById('targetFunc').value // กรณีที่เป็น Javascript
-        let target = $("#targetFunc").val();
+        let target = $('#targetFunc').val()
         switch (target) {
-          case "add":
-            submitFormData(data);
-            break;
+          case 'add':
+            submitFormData(data)
+            break
 
-          case "edit":
-            updateFormData(data);
-            break;
+          case 'edit':
+            updateFormData(data)
+            break
 
           default:
-            break;
+            break
         }
       }
 
       function submitFormData(obj) {
-        event.preventDefault();
+        event.preventDefault()
 
-        Swal.fire({ title: "รอสักครู่.." });
-        Swal.showLoading();
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
 
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "บันทึกข้อมูลสำเร็จ",
+              position: 'center',
+              icon: 'success',
+              title: 'บันทึกข้อมูลสำเร็จ',
               showConfirmButton: false,
               timer: 1500,
-            });
-            document.getElementById("myForm").reset();
-            $("#staticBackdrop").modal("hide");
-            showTable();
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
           })
-          .saveData(obj);
+          .saveData(obj)
       }
 
       function updateFormData(obj) {
-        event.preventDefault();
+        event.preventDefault()
 
-        Swal.fire({ title: "รอสักครู่.." });
-        Swal.showLoading();
+        Swal.fire({ title: 'รอสักครู่..' })
+        Swal.showLoading()
 
         google.script.run
           .withSuccessHandler(() => {
             Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "อัพเดตข้อมูลสำเร็จ",
+              position: 'center',
+              icon: 'success',
+              title: 'อัพเดตข้อมูลสำเร็จ',
               showConfirmButton: false,
               timer: 1500,
-            });
-            document.getElementById("myForm").reset();
-            $("#staticBackdrop").modal("hide");
-            showTable();
+            })
+            document.getElementById('myForm').reset()
+            $('#staticBackdrop').modal('hide')
+            showTable()
           })
-          .updateData(obj);
+          .updateData(obj)
       }
 
       function deleteRow(el) {
-        const passwordForDeleteId = document.getElementById("passwordModal");
-        const btnModalPassword = document.getElementById("btnModalPassword");
-        const passwordInput = document.getElementById("pass");
-        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId);
+        const passwordForDeleteId = document.getElementById('passwordModal')
+        const btnModalPassword = document.getElementById('btnModalPassword')
+        const passwordInput = document.getElementById('pass')
+        const passwordForDeleteModal = new bootstrap.Modal(passwordForDeleteId)
 
-        passwordForDeleteModal.show();
+        passwordForDeleteModal.show()
 
-        btnModalPassword.addEventListener("click", function () {
-          if (passwordInput.value === "pass1234") {
+        btnModalPassword.addEventListener('click', function () {
+          if (passwordInput.value === 'pass1234') {
             Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "รหัสผ่านถูกต้อง",
+              position: 'center',
+              icon: 'success',
+              title: 'รหัสผ่านถูกต้อง',
               showConfirmButton: false,
               timer: 1500,
-            });
-            passwordForDeleteModal.hide();
-            Swal.fire({ title: "กำลังลบข้อมูล.." });
-            Swal.showLoading();
+            })
+            passwordForDeleteModal.hide()
+            Swal.fire({ title: 'กำลังลบข้อมูล..' })
+            Swal.showLoading()
 
-            const numId = el.parentNode.parentNode.cells[0].innerText;
+            const numId = el.parentNode.parentNode.cells[0].innerText
             google.script.run
               .withSuccessHandler(() => {
                 Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: "ลบข้อมูลสำเร็จ",
+                  position: 'center',
+                  icon: 'success',
+                  title: 'ลบข้อมูลสำเร็จ',
                   showConfirmButton: false,
                   timer: 1500,
-                });
-                showTable();
+                })
+                showTable()
               })
-              .deleteRecord(numId);
+              .deleteRecord(numId)
           } else {
             Swal.fire({
-              position: "center",
-              icon: "error",
-              title: "รหัสผ่านไม่ถูกต้อง",
+              position: 'center',
+              icon: 'error',
+              title: 'รหัสผ่านไม่ถูกต้อง',
               showConfirmButton: false,
               timer: 1500,
-            });
-            passwordInput.value = "";
+            })
+            passwordInput.value = ''
           }
-        });
+        })
       }
 
-      window.addEventListener("load", () => {
-        $("#Login").modal("show");
-        showTable();
-      });
+      window.addEventListener('load', () => {
+        $('#Login').modal('show')
+        showTable()
+      })
 
-      let updateDataTable = false;
-      let table;
+      let updateDataTable = false
+      let table
 
       function showTable(res) {
         google.script.run
           .withSuccessHandler((res) => {
-            const dataSet = res.data;
+            const dataSet = res.data
             const headers = res.headers.map((header) => {
-              return { title: header };
-            });
+              return { title: header }
+            })
             if (!updateDataTable) {
               // new DataTable("#example", {
-              table = $("#example").DataTable({
+              table = $('#example').DataTable({
                 columns: headers,
                 data: dataSet,
                 responsive: true,
                 destroy: true,
-                order: [[0, "desc"]],
+                order: [[0, 'desc']],
                 responsive: {
                   details: {
                     display: DataTable.Responsive.display.modal({
                       header: function (row) {
-                        var data = row.data();
-                        return "ข้อมูลของ " + data[1];
+                        var data = row.data()
+                        return 'ข้อมูลของ ' + data[1]
                       },
                     }),
                     renderer: DataTable.Responsive.renderer.tableAll({
-                      tableClass: "table",
+                      tableClass: 'table',
                     }),
                   },
                 },
                 pageLength: 10,
                 language: {
-                  url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
+                  url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
                 },
                 columnDefs: [
                   {
@@ -431,29 +430,23 @@
                   {
                     target: 5,
                     render: (data) => {
-                      if (data === "ผู้จัดการ") {
+                      if (data === 'ผู้จัดการ') {
                         return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ผู้จัดการ</div>
-                                </div>`;
-                      } else if (data === "พนักงาน") {
+                                </div>`
+                      } else if (data === 'พนักงาน') {
                         return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-warning" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">พนักงาน</div>
-                                </div>`;
-                      } else if (data === "ลูกจ้างชั่วคราว") {
+                                </div>`
+                      } else if (data === 'ลูกจ้างชั่วคราว') {
                         return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างชั่วคราว</div>
-                                </div>`;
+                                </div>`
                       } else {
                         return `<div class="progress">
                                   <div class="progress-bar progress-bar-striped  progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">ลูกจ้างประจำ</div>
-                                </div>`;
+                                </div>`
                       }
-                    },
-                  },
-                  {
-                    target: -4,
-                    render: (data) => {
-                      return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
                     },
                   },
                   {
@@ -471,74 +464,74 @@
                   {
                     target: -2,
                     render: (data) => {
-                      return (data = `<button class="btn btn-sm btn-success" onclick="detail(this)"> <i class="fa-solid fa-eye"></i> </button>`);
+                      return (data = `<button class="btn btn-sm btn-success" onclick="detail(this)"> <i class="fa-solid fa-eye"></i> </button>`)
                     },
                   },
                   {
                     target: -1,
                     render: (data) => {
-                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
+                      return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
                     },
                   },
                 ],
                 dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
                 buttons: [
                   {
-                    text: "เพิ่มข้อมูล",
+                    text: 'เพิ่มข้อมูล',
                     action: function (e, dt, node, config) {
-                      $("#staticBackdrop").modal("show");
-                      setForm("add", "เพิ่มข้อมูล");
+                      $('#staticBackdrop').modal('show')
+                      setForm('add', 'เพิ่มข้อมูล')
                     },
                   },
-                  { extend: "copy", className: "btn-success" },
-                  { extend: "csv", className: "btn-primary" },
-                  { extend: "excel", className: "btn-danger" },
-                  { extend: "pdf", className: "btn-info" },
-                  { extend: "print", className: "btn-warning" },
+                  { extend: 'copy', className: 'btn-success' },
+                  { extend: 'csv', className: 'btn-primary' },
+                  { extend: 'excel', className: 'btn-danger' },
+                  { extend: 'pdf', className: 'btn-info' },
+                  { extend: 'print', className: 'btn-warning' },
                 ],
                 lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
-              });
-              updateDataTable = true;
+              })
+              updateDataTable = true
             } else {
               // let table = document.getElementById('example').DataTable()
-              let table = $("#example").DataTable();
-              table.clear().rows.add(dataSet).draw();
+              let table = $('#example').DataTable()
+              table.clear().rows.add(dataSet).draw()
             }
           })
-          .getData();
+          .getData()
       }
 
       function previewImage(event) {
         if (event.target.files.length > 0) {
-          let source = URL.createObjectURL(event.target.files[0]);
-          $("#myPreview").attr("src", source);
-          myPreview.style.display = "block";
+          let source = URL.createObjectURL(event.target.files[0])
+          $('#myPreview').attr('src', source)
+          myPreview.style.display = 'block'
         }
       }
 
       function editData(el) {
-        $("#staticBackdrop").modal("show");
-        let rowData = table.row(el.parentNode.parentNode).data();
+        $('#staticBackdrop').modal('show')
+        let rowData = table.row(el.parentNode.parentNode).data()
         // $('#rowId').val(el.parentNode.parentNode.cells[0].innerHTML)
         // หา element ที่มี id เป็น 'rowId' และกำหนดค่าให้กับคุณสมบัติ value ด้วยค่าที่อยู่ในเซลล์แรกของแถวที่ถูกคลิก
-        document.getElementById("rowId").value =
-          el.parentNode.parentNode.cells[0].innerHTML;
+        document.getElementById('rowId').value =
+          el.parentNode.parentNode.cells[0].innerHTML
 
-        let data = [rowData][0];
-        setForm("edit", "อัพเดตข้อมูล");
+        let data = [rowData][0]
+        setForm('edit', 'อัพเดตข้อมูล')
 
-        $("#input1").val(data[0]);
-        $("#input2").val(data[1]);
-        $("#input3").val(data[2]);
-        $("#input4").val(data[3]);
-        $("#input5").val(data[4]);
-        $("#input6").val(data[5]);
-        $("#myPreview").attr("src", data[6]);
+        $('#input1').val(data[0])
+        $('#input2').val(data[1])
+        $('#input3').val(data[2])
+        $('#input4').val(data[3])
+        $('#input5').val(data[4])
+        $('#input6').val(data[5])
+        $('#myPreview').attr('src', data[6])
       }
 
       function setForm(target, title) {
-        $("#targetFunc").val(target);
-        $(".modal-title").text(title);
+        $('#targetFunc').val(target)
+        $('.modal-title').text(title)
       }
 
       // เมื่อมีการปิด form (event : hidden.bs.modal, ให้ this===modal ทำการ reset form เพื่อไมให้มีค่าค้างอยุ่ในช่่อง input)
