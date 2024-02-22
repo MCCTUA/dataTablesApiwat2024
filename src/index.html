@@ -208,6 +208,7 @@
       <table
         id="example"
         class="table table-striped centered"
+        class="table table-striped centered"
         style="width: 100%"
       >
         <thead class="table-dark"></thead>
@@ -426,7 +427,7 @@
                     width: 100,
                     targets: 2,
                   },
-                  { className: "centered", targets: ["_all"] },
+                  { className: 'centered', targets: ['_all'] },
                   {
                     target: 5,
                     render: (data) => {
@@ -450,9 +451,21 @@
                     },
                   },
                   {
-                    target: -3,
+                    target: -4,
                     render: (data) => {
                       return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
+                    },
+                  },
+                  {
+                    target: -4,
+                    render: (data) => {
+                      return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
+                    },
+                  },
+                  {
+                    target: -3,
+                    render: (data) => {
+                      return (data = `<button class="btn btn-sm btn-warning" onclick="download(this)"> <i class="fa-solid fa-download"></i> </button>`)
                     },
                   },
                   {
@@ -529,9 +542,23 @@
       }
 
       // เมื่อมีการปิด form (event : hidden.bs.modal, ให้ this===modal ทำการ reset form เพื่อไมให้มีค่าค้างอยุ่ในช่่อง input)
-      $(".modal").on("hidden.bs.modal", function () {
-        $(this).find("form").trigger("reset");
-      });
+      $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset')
+      })
+
+      function download(el) {
+        let rowData = table.row(el.parentNode.parentNode).data()
+        fetch(rowData[7])
+          .then((res) => res.blob())
+          .then((blob) => {
+            let url = URL.createObjectURL(blob)
+            const a = document.createElement(`a`)
+            a.href = url
+            a.download = 'image.png'
+            a.click()
+            URL.revokeObjectURL(url)
+          })
+      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
