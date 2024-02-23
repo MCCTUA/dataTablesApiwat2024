@@ -57,7 +57,8 @@ function saveData(obj) {
           month: 'long',
           year: 'numeric',
         }),
-        `https://lh3.googleUserContent.com/d/${fileId}`,
+        // `https://lh3.googleUserContent.com/d/${fileId}`,
+        fileUrl,
       ])
     } else {
       ss.appendRow([
@@ -121,8 +122,8 @@ function deleteRecord(numId) {
   const { ss, idRow } = getDataWorkSheet()
   let index = idRow.indexOf(numId)
   // ลบไฟล์ที่ upload มาก่อนหน้าด้วย
-  let file = ss.getRange(index + 1, 7).getValue()
-  let idFile = file.split('/')[4]
+  let file = ss.getRange(index + 1, 8).getValue()
+  let idFile = file.split('/')[5]
   DriveApp.getFileById(idFile).setTrashed(true)
   // ลบข้อมูลใน sheet
   ss.deleteRow(index + 1)
