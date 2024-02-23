@@ -288,6 +288,44 @@
           </div>
         </div>
       </div>
+      <!-- end modal -->
+      <!-- youtube modal -->
+      <div
+        class="modal fade"
+        id="myVDO"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title fs-5" id="staticBackdropLabel"></div>
+              <button
+                type="button"
+                class="btn-close"
+                id="cls"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <iframe
+              id="clipVDO"
+              width="598px"
+              height="300px"
+              src=""
+              title="YouTube video player"
+              frameborder="5"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+      <!-- end modal -->
     </div>
     <script>
       function submitForm(data) {
@@ -493,27 +531,33 @@
                       },
                     },
                     {
-                      target: -4,
+                      target: -5,
                       render: (data) => {
                         return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
                       },
                     },
                     {
-                      target: -3,
+                      target: -4,
                       render: (data) => {
                         return (data = `<button class="btn btn-sm btn-warning" onclick="download(this)"> <i class="fa-solid fa-download"></i> </button>`)
                       },
                     },
                     {
-                      target: -2,
+                      target: -3,
                       render: (data) => {
                         return (data = `<button class="btn btn-sm btn-success" onclick="showPopup(this)"> <i class="fa-solid fa-eye"></i> </button>`)
                       },
                     },
                     {
-                      target: -1,
+                      target: -2,
                       render: (data) => {
                         return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button> <button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
+                      },
+                    },
+                    {
+                      target: -1,
+                      render: (data) => {
+                        return (data = `<button class="btn btn-sm btn-warning" onclick="showYoutube(this)"> <i class="fa-brands fa-youtube"></i> </button>`)
                       },
                     },
                   ],
@@ -726,6 +770,24 @@
           id.join(',')
         })
         console.log(id)
+      }
+
+      function showYoutube(el) {
+        let rowData = table.row(el.parentNode.parentNode).data()
+        let colData = [rowData][0]
+        let url = colData[9]
+
+        $('#clipVDO .modal-body ').html('')
+        $('#clipVDO').html('<iframe src="' + url + '"></iframe>')
+        $('#myVDO').modal('show')
+
+        $('#myVDO').on('hide.bs.modal', function () {
+          $('#clipVDO').attr('src', '')
+        })
+
+        $('#myVDO').on('shown.bs.modal', function () {
+          $('#clipVDO').attr('src', url)
+        })
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
