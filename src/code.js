@@ -82,9 +82,7 @@ function updateData(obj) {
     // rowId มาจาก <input id="rowId" name="rowId" hidden/>
     let index = idRow.indexOf(obj.rowId)
     console.log('index', idRow, index)
-    let oldLink = ss.getRange(index + 1, 8).getValue()
-    console.log('old link', oldLink)
-    console.log(' get range : ', ss.getRange(index + 1, 2, 1, 7).getValues)
+    let oldLink = ss.getRange(index + 1, 9).getValue()
     let saveLink = oldLink
     // เช็คว่ามี file ถูก upload มาหรือไม่
     if (obj.myfile.length > 0) {
@@ -108,7 +106,7 @@ function updateData(obj) {
     console.log('update row : ', updateRow)
     // id เราไม่แก้ไขดังนี้น ต้องเร่ิมตั้งแต่ column 2 เป็นต้นไป
 
-    ss.getRange(index + 1, 2, 1, 7).setValues([updateRow])
+    ss.getRange(index + 1, 2, 1, 8).setValues([updateRow])
   } catch (error) {
     console.error('Error', error)
   }
@@ -122,7 +120,7 @@ function deleteRecord(numId) {
   const { ss, idRow } = getDataWorkSheet()
   let index = idRow.indexOf(numId)
   // ลบไฟล์ที่ upload มาก่อนหน้าด้วย
-  let file = ss.getRange(index + 1, 8).getValue()
+  let file = ss.getRange(index + 1, 9).getValue()
   let idFile = file.split('/')[5]
   DriveApp.getFileById(idFile).setTrashed(true)
   // ลบข้อมูลใน sheet

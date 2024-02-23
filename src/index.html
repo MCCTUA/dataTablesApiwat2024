@@ -12,21 +12,24 @@
       referrerpolicy="no-referrer"
     ></script>
 
-    <!-- datatables -->
+    <!--- style sheet -->
 
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <!-- datatables -->
+
     <link
-      href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.css"
+      href="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.0.0/b-3.0.0/b-html5-3.0.0/b-print-3.0.0/fc-5.0.0/r-3.0.0/sl-2.0.0/datatables.min.css"
       rel="stylesheet"
     />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/r-2.5.0/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.0.0/b-3.0.0/b-html5-3.0.0/b-print-3.0.0/fc-5.0.0/r-3.0.0/sl-2.0.0/datatables.min.js"></script>
 
     <!-- google font -->
 
@@ -58,6 +61,9 @@
       table.dataTable tr:hover td {
         background-color: #e1f7f350 !important;
         cursor: pointer;
+      }
+      .table > thead {
+        background-color: #2e2e2e;
       }
     </style>
   </head>
@@ -435,12 +441,17 @@
                   },
                   columnDefs: [
                     {
+                      orderable: false,
+                      render: DataTable.render.select(),
+                      targets: 0,
+                    },
+                    {
                       width: 100, // ปรับความกว้าง column โดย target คือ column ที่2
                       targets: 2,
                     },
                     { className: 'centered', targets: ['_all'] },
                     {
-                      target: 5,
+                      target: 6,
                       render: (data) => {
                         if (data === 'ผู้จัดการ') {
                           return `<div class="progress">
@@ -486,6 +497,9 @@
                       },
                     },
                   ],
+                  select: {
+                    style: 'multi',
+                  },
                   dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
                   buttons: [
                     {
@@ -570,17 +584,17 @@
         let data = [rowData][0]
         console.log('data edit data :', data)
         setForm('edit', 'อัพเดตข้อมูล')
-        console.log('date :', data[6])
+        console.log('date :', data[7])
         console.log('date :', convertThaiDateToISO(data[6]))
 
-        $('#input1').val(data[0])
-        $('#input2').val(data[1])
-        $('#input3').val(data[2])
-        $('#input4').val(data[3])
-        $('#input5').val(data[4])
-        $('#input6').val(data[5])
-        $('#input7').val(convertThaiDateToISO(data[6]))
-        $('#myPreview').attr('src', data[7])
+        $('#input1').val(data[1])
+        $('#input2').val(data[2])
+        $('#input3').val(data[3])
+        $('#input4').val(data[4])
+        $('#input5').val(data[5])
+        $('#input6').val(data[6])
+        $('#input7').val(convertThaiDateToISO(data[7]))
+        $('#myPreview').attr('src', data[8])
       }
 
       function setForm(target, title) {
@@ -596,8 +610,7 @@
       function download(el) {
         try {
           let rowData = table.row(el.parentNode.parentNode).data()
-          let fileId = rowData[7].split('/')[4]
-          console.log('file id : ', fileId, rowData[7])
+          let fileId = rowData[8].split('/')[4]
           // fetch(rowData[7])
           //   .then((res) => res.blob())
           //   .then((blob) => {
@@ -626,7 +639,7 @@
                       <thead>
                           <tr>
                               <th colspan="2" class="text-center">
-                                  <img src="${colData[7]}" width="200px">
+                                  <img src="${colData[8]}" width="200px">
                               </th>
                           </tr>
                       </thead>
@@ -639,37 +652,37 @@
                           <th>
                               ชื่อ-สกุล
                           </th>
-                          <td>${colData[1]}</td>
+                          <td>${colData[2]}</td>
                       </tr>
                       <tr>
                           <th>
                               เบอร์โทร
                           </th>
-                          <td>${colData[2]}</td>
+                          <td>${colData[3]}</td>
                       </tr>
                       <tr>
                           <th>
                               Email
                           </th>
-                          <td>${colData[3]}</td>
+                          <td>${colData[4]}</td>
                       </tr>
                       <tr>
                           <th>
                               ชื่อเล่น
                           </th>
-                          <td>${colData[4]}</td>
+                          <td>${colData[5]}</td>
                       </tr>
                       <tr>
                           <th>
                               ตำแหน่ง
                           </th>
-                          <td>${colData[5]}</td>
+                          <td>${colData[6]}</td>
                       </tr>
                       <tr>
                           <th>
                               วันเกิด
                           </th>
-                          <td>${colData[6]}</td>
+                          <td>${colData[7]}</td>
                       </tr>
                   </table>`,
           })
