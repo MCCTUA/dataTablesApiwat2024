@@ -18,7 +18,7 @@ function include(file) {
 function getDataWorkSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('sheet1')
   const data = ss.getDataRange().getDisplayValues()
-  const idRow = data.map((row) => row[0])
+  const idRow = data.map((row) => row[1])
   const folder = DriveApp.getFolderById('1hjgAMvEB2t5h3B4e5T2nSgVdbZUdbAp6')
 
   let dataObj = {
@@ -46,6 +46,7 @@ function saveData(obj) {
       const fileId = fileUrl.split('/')[5]
       let idRec = idAuto.getID(ss)
       ss.appendRow([
+        '',
         idRec,
         obj.input2,
         "'" + obj.input3,
@@ -119,11 +120,15 @@ function updateData(obj) {
 function deleteRecord(numId) {
   const { ss, idRow } = getDataWorkSheet()
   let index = idRow.indexOf(numId)
+  console.log('numId : ', numId)
+  console.log('index : ', idRow, index)
   // ลบไฟล์ที่ upload มาก่อนหน้าด้วย
   let file = ss.getRange(index + 1, 9).getValue()
-  let idFile = file.split('/')[5]
+  console.log('file :', file)
+  let idFile = file.split('/')[4]
+  console.log('idFile :', idFile)
   DriveApp.getFileById(idFile).setTrashed(true)
-  // ลบข้อมูลใน sheet
+  // // ลบข้อมูลใน sheet
   ss.deleteRow(index + 1)
 }
 

@@ -372,7 +372,7 @@
             Swal.fire({ title: 'กำลังลบข้อมูล..' })
             Swal.showLoading()
 
-            const numId = el.parentNode.parentNode.cells[0].innerText
+            const numId = el.parentNode.parentNode.cells[1].innerText
             google.script.run
               .withSuccessHandler(() => {
                 Swal.fire({
@@ -441,9 +441,23 @@
                   },
                   columnDefs: [
                     {
+                      // สร้าง check box ทำงาน ร่วมกับ key : select ที่ต่อจากนี้
                       orderable: false,
                       render: DataTable.render.select(),
                       targets: 0,
+                    },
+                    {
+                      // เมื่อย่อหน้าจอบน mobile แล้ว ให้แสดงสิ่งที่ต้องการ และโดยให้ปุ่ม อยู่บนหน้าจอ เพื่อที่เวลาคลิกที่ปุ่ม การทำงาน จะยังคงถูกต้อง (ได้ id ตรง ไม่เช่นนั้นจะได้ -1 เมื่อใช้คำสั่ง find())
+                      responsivePriority: 1,
+                      target: -1,
+                    },
+                    {
+                      responsivePriority: 2,
+                      target: -2,
+                    },
+                    {
+                      responsivePriority: 3,
+                      target: -3,
                     },
                     {
                       width: 100, // ปรับความกว้าง column โดย target คือ column ที่2
@@ -589,7 +603,7 @@
         console.log('data edit data :', data)
         setForm('edit', 'อัพเดตข้อมูล')
         console.log('date :', data[7])
-        console.log('date :', convertThaiDateToISO(data[6]))
+        console.log('date :', convertThaiDateToISO(data[7]))
 
         $('#input1').val(data[1])
         $('#input2').val(data[2])
@@ -636,6 +650,8 @@
         try {
           let rowData = table.row(el.parentNode.parentNode).data()
           let colData = [rowData][0]
+          console.log(rowData)
+          console.log(colData)
           Swal.fire({
             showConfirmButton: false,
             showCloseButton: true,
@@ -643,7 +659,7 @@
                       <thead>
                           <tr>
                               <th colspan="2" class="text-center">
-                                  <img src="${colData[8]}" width="200px">
+                                  <img src="${colData[7]}" width="200px">
                               </th>
                           </tr>
                       </thead>
@@ -656,37 +672,37 @@
                           <th>
                               ชื่อ-สกุล
                           </th>
-                          <td>${colData[2]}</td>
+                          <td>${colData[1]}</td>
                       </tr>
                       <tr>
                           <th>
                               เบอร์โทร
                           </th>
-                          <td>${colData[3]}</td>
+                          <td>${colData[2]}</td>
                       </tr>
                       <tr>
                           <th>
                               Email
                           </th>
-                          <td>${colData[4]}</td>
+                          <td>${colData[3]}</td>
                       </tr>
                       <tr>
                           <th>
                               ชื่อเล่น
                           </th>
-                          <td>${colData[5]}</td>
+                          <td>${colData[4]}</td>
                       </tr>
                       <tr>
                           <th>
                               ตำแหน่ง
                           </th>
-                          <td>${colData[6]}</td>
+                          <td>${colData[5]}</td>
                       </tr>
                       <tr>
                           <th>
                               วันเกิด
                           </th>
-                          <td>${colData[7]}</td>
+                          <td>${colData[6]}</td>
                       </tr>
                   </table>`,
           })
