@@ -422,6 +422,12 @@
                   responsive: true,
                   destroy: true,
                   order: [[0, 'desc']],
+                  rowCallback: (row, data) => {
+                    // การจัดการเกี่ยวกับ row ในกรณีนี้ให้ใส่แถบสี
+                    if (data[6] === 'ลูกจ้างชั่วคราว') {
+                      $('td', row).css('background-color', '#fcfcc5')
+                    }
+                  },
                   responsive: {
                     details: {
                       display: DataTable.Responsive.display.modal({
