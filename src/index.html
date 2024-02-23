@@ -509,6 +509,10 @@
                         setForm('add', 'เพิ่มข้อมูล')
                       },
                     },
+                    {
+                      text: 'เลือกข้อมูล',
+                      action: selectData,
+                    },
                     { extend: 'copy', className: 'btn-success' },
                     { extend: 'csv', className: 'btn-primary' },
                     { extend: 'excel', className: 'btn-danger' },
@@ -689,6 +693,17 @@
         } catch (error) {
           console.error('Error : ', error)
         }
+      }
+
+      function selectData() {
+        let row_select = table.rows({ selected: true }).data()
+        console.log('row select : ', row_select)
+        let id = []
+        $.each(row_select, function (index, rowId) {
+          id.push(rowId[1])
+          id.join(',')
+        })
+        console.log(id)
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
